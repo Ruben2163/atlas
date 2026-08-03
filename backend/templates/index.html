@@ -94,18 +94,46 @@ async function updateSystem() {
         data.cpu.usage + " %";
 
     document.getElementById("ram").innerHTML =
-        data.memory.usage + " %";
+        data.memory.usage + " GiB";
 
     document.getElementById("disk").innerHTML =
         data.disk.usage + " %";
 
     document.getElementById("fan").innerHTML =
         data.fan.rpm + " RPM";
+
+
+    function setColour(id, value, lowLimit, highLimit) {
+
+        let element = document.getElementById(id);
+
+        if (value < lowLimit) {
+            element.style.color = "lime";
+        }
+        else if (value < highLimit) {
+            element.style.color = "orange";
+        }
+        else {
+            element.style.color = "red";
+        }
+
+    }
+
+
+    setColour("temp", data.cpu.temperature, 50, 70);
+    setColour("fan", data.fan.rpm, 3500, 4000);
+    setColour("cpu", data.cpu.usage, 30, 70);
+    setColour("ram", data.memory.usage, 60, 85);
+    setColour("disk", data.disk.usage, 75, 90);
 }
 
 updateSystem();
 
-setInterval(updateSystem,100);
+setInterval(updateSystem,1000);
+
+
+
+
 
 </script>
 
