@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Atlas</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #1a1a1a;
+            color: white;
+            margin: 40px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 250px);
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .card {
+            background: #2b2b2b;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .title {
+            color: #888;
+            font-size: 18px;
+        }
+
+        .value {
+            font-size: 40px;
+            margin-top: 15px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1>Atlas</h1>
+
+<div class="dashboard">
+
+    <div class="card">
+        <div class="title">CPU Temperature</div>
+        <div class="value" id="temp">--</div>
+    </div>
+
+    <div class="card">
+        <div class="title">CPU Usage</div>
+        <div class="value" id="cpu">--</div>
+    </div>
+
+    <div class="card">
+        <div class="title">RAM Usage</div>
+        <div class="value" id="ram">--</div>
+    </div>
+
+    <div class="card">
+        <div class="title">Disk Usage</div>
+        <div class="value" id="disk">--</div>
+    </div>
+
+    <div class="card">
+        <div class="title">Fan Speed</div>
+        <div class="value" id="fan">--</div>
+    </div>
+
+</div>
+
+<script>
+
+async function updateSystem() {
+
+    const response = await fetch("/system");
+
+    const data = await response.json();
+
+    document.getElementById("temp").innerHTML =
+        data.cpu.temperature + " °C";
+
+    document.getElementById("cpu").innerHTML =
+        data.cpu.usage + " %";
+
+    document.getElementById("ram").innerHTML =
+        data.memory.usage + " %";
+
+    document.getElementById("disk").innerHTML =
+        data.disk.usage + " %";
+
+    document.getElementById("fan").innerHTML =
+        data.fan.rpm + " RPM";
+}
+
+updateSystem();
+
+setInterval(updateSystem,100);
+
+</script>
+
+</body>
+
+</html>

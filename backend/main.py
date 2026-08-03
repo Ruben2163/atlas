@@ -1,14 +1,34 @@
 from fastapi import FastAPI
-from stats import cpu_temp
+from sensors import *
+from fastapi import Request
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 
-@app.get("/")
-def home():
-    return {"message": "PiHub API"}
+templates = Jinja2Templates(directory="templates")
 
-@app.get("/temperature")
-def get_temperature():
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html"
+    )
+
+@app.get("/system")
+def system():
     return {
-        "temperature": cpu_temp()
+        "cpu": {
+            "temperature": cpu_temp(),
+            "usage": cpu_usage()
+        },
+        "memory": {
+            "usage": ram_usage()
+        },
+        "disk": {
+            "usage": disk_usage()
+        },
+        "fan": {
+            "rpm": fan_usage()
+
+        }
     }
