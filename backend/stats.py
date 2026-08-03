@@ -1,8 +1,6 @@
-from time import sleep
+def cpu_temp():
+    with open("/sys/class/thermal/thermal_zone0/temp") as f:
+        cpu = float(f.read()) / 1000
+    return round(cpu, 1)
 
-
-
-for i in range(10):
-    cpu = (open("/sys/class/thermal/thermal_zone0/temp")).read()
-    print(round(float(cpu)/1000), 1)
-    sleep(1)
+print(cpu_temp())
